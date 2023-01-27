@@ -34,7 +34,50 @@ async function create(body){
   return {message};
 }
 
+async function update(id, programmingLanguage){
+  const result = await db.query(
+    `UPDATE programming_languages 
+    SET name="${programmingLanguage.name}", released_year=${programmingLanguage.released_year}, githut_rank=${programmingLanguage.githut_rank}, 
+    pypl_rank=${programmingLanguage.pypl_rank}, tiobe_rank=${programmingLanguage.tiobe_rank} 
+    WHERE id=${id}` 
+  );
+
+  let message = 'Error in updating programming language';
+
+  if (result.affectedRows) {
+    message = 'Programming language updated successfully';
+  }
+
+  return {message};
+}
+
+async function remove(id) {
+  const result = await db.query(
+    `DELETE FROM programming_languages WHERE id=${id}`
+  );
+
+  let message = 'Error in deleting programming language';
+
+  if (result.affectedRows) {
+    message = 'Programming language deleted successfully';
+  }
+
+  return {message};
+}
+
+async function get(id) {
+  const result = await db.query(
+    `SELECT * FROM programming_languages WHERE id=${id}`
+  );
+
+  const data = helper.emptyOrRows(result);
+  return data.length && data[0]
+}
+
 module.exports = {
   getMultiple,
-  create
+  create,
+  update,
+  remove,
+  get
 }
