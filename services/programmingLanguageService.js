@@ -17,6 +17,22 @@ async function getMultiple(page = 1){
   }
 }
 
+async function create(body){
+
+  let sql = "INSERT INTO `programming_languages` (name, released_year, githut_rank, pypl_rank, tiobe_rank) VALUES (?, ?, ?, ?, ?)";
+
+  const result = await db.query(sql, [body.name, body.released_year, body.githut_rank, body.pypl_rank, body.tiobe_rank])
+
+  let message = 'Error in creating programming language';
+  
+  if (result.affectedRows) {
+    message = 'Programming language created successfully';
+  }
+
+  return {message};
+}
+
 module.exports = {
-  getMultiple
+  getMultiple,
+  create
 }
